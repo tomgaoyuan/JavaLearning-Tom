@@ -1,8 +1,9 @@
-import java.io.PrintWriter;
-import java.util.*;
 /*
  * Java syntax learning
  */
+import java.io.PrintWriter;
+import java.util.*;
+import OutCoding.*;
 public class SyntaxLearning {
 
 	public static void main(String[] argv)
@@ -21,7 +22,10 @@ public class SyntaxLearning {
 		//fun12();
 		//fun13();
 		//fun14();
-		ReflectionTest.work();
+		//ReflectionTest.classAnalyzer();
+		//using package OutCoding
+		//Main.fun7();
+		ReflectionTest.objectAnalyzer(new Manager("tom","CTO"));
 		System.out.println("Done!");
 	}
 	private static void fun1() {
