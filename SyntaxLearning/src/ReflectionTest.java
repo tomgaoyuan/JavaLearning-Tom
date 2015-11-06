@@ -38,15 +38,26 @@ public class ReflectionTest {
 	}
 	public static void objectAnalyzer(Object obj) {
 		Class cl = obj.getClass();
-		String str = new String(cl.getName());
-		Field[] fields = cl.getDeclaredFields();
-		for ( Field ele : fields) {
-			System.out.println(ele.getName());
-			try {
-				System.out.println( ele.get(obj));
-			}catch (Exception e) {
-				System.out.println("Exception occured!");
+		List<Class> cls = new ArrayList<Class>();
+		do {
+			cls.add(cl);
+			System.out.println("An object of class" + cl.getName());
+			Field[] fields = cl.getDeclaredFields();
+			for ( Field ele : fields) {
+				String line = new String();
+				line += ele.getType().getName();
+				line += ":";			
+				line += ele.getName();
+				line += "=";
+				AccessibleObject.setAccessible(fields, true);
+				try {
+					line += ele.get(obj);
+				}catch (Exception e) {
+					System.out.println("Exception occured!");
+				}
+				System.out.println(line);
+				cl = cl.getSuperclass();
 			}
-		}
+		}while (!cls.contains(cl));
 	}
 }
