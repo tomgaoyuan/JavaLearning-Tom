@@ -3,10 +3,13 @@
  */
 package OutCoding;
 
+import java.util.*;
+
 public class Main {
 	public static void main(String[] argv) {
 		
-		fun5();
+		fun7();
+		//fun6();
 		System.out.println("Exiting...");
 	}
 	public static void compareAge( IComparable lhs, IComparable rhs) {
@@ -67,6 +70,55 @@ public class Main {
 		arr[2] = new String("!");
 		System.out.println(arr.getClass());
 	}
+	public static void fun6() {
+		//Collection views demos
+		Set<String> set = new TreeSet<String>();
+		set.add("a");
+		set.add("ab");
+		set.add("c");
+		set.add("xx");
+		System.out.println(set.toString());
+		if (set instanceof SortedSet) {
+			//subset demo
+			SortedSet<String> subset = ((TreeSet<String>) set).subSet("a", "b");
+			System.out.println(subset.toString());
+		}
+		//unmodifiable views
+		List<String> list = new LinkedList<String>();
+		list.add("a");
+		list.add("b");
+		list.add("z");
+		System.out.println(list.toString());
+		list.remove(0);
+		System.out.println(list.toString());
+		List<String> constlist = Collections.unmodifiableList(list);
+		System.out.println(constlist.toString());
+		try {
+			constlist.remove(0);
+		}catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		//this following codes are compilable
+		System.out.println(constlist.toString());
+		List rawlist = list;
+		rawlist.add(new Integer(1));
+		System.out.println(list.toString());
+		System.out.println(set.toString());
+		set.retainAll(list);
+		System.out.println(set.toString());
+	}
+	public static void fun7() {
+		//algrorithm
+		final int LENGTH =1000;
+		Integer[] arr = new Integer[LENGTH];
+		for (int c=0; c<LENGTH; c++)
+			arr[c] = LENGTH-c;
+		List<Integer> list = new LinkedList<Integer>( Arrays.asList(arr) );
+		System.out.println(list.subList(0, 10));
+		Collections.sort(list);
+		System.out.println(list.subList(0, 10));
+		System.out.println(Collections.binarySearch(list, new Integer(500)));
+	}
 }
 
 interface IComparable {
@@ -121,3 +173,4 @@ class Iarray<T> {
 	private Object[] _arr;
 	private int _top;
 }
+
