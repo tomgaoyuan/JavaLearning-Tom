@@ -8,24 +8,11 @@ public class SyntaxLearning {
 
 	public static void main(String[] argv)
 	{
-		//fun1();
-		//fun2();
-		//fun3();
-		//fun4();
-		//fun5();
-		//fun6();
-		//fun7();
-		//fun8();
-		//fun9();
-		//fun10();
-		//fun11();
-		//fun12();
-		//fun13();
-		//fun14();
+		fun15();
 		//ReflectionTest.classAnalyzer();
 		//using package OutCoding
 		//Main.fun7();
-		ReflectionTest.objectAnalyzer(new Manager("tom","CTO"));
+		//ReflectionTest.objectAnalyzer(new Manager("tom","CTO"));
 		System.out.println("Done!");
 	}
 	private static void fun1() {
@@ -83,6 +70,7 @@ public class SyntaxLearning {
 		p.debug();
 	}
 	private static void fun5() {
+		//anonymous class
 		Manager boss = new Manager("Bill", "CTO") {
 			public void debug() {
 				System.out.println("Object of class boss");
@@ -91,6 +79,7 @@ public class SyntaxLearning {
 		boss.debug();
 	}
 	private static void fun6() {
+		//ArrayList demo
 		java.util.ArrayList<Comparable<Integer>> arr = new java.util.ArrayList<Comparable<Integer>>();
 		arr.add(new Integer(1));
 		arr.add(new Integer(2));
@@ -192,6 +181,46 @@ public class SyntaxLearning {
 			System.out.println("Contained!");
 		else 
 			System.out.println("NOT Contained!");
+	}
+	private static void fun15() {
+		//array type cast
+		Integer[] arr = new Integer[3];
+		arr[0] = new Integer(0);
+		arr[1] = new Integer(1);
+		arr[2] = new Integer(2);
+		System.out.println(arr[0].getClass().getName());
+		//ok like this
+		Object[] oarr = (Object[]) arr;
+		//error like this ArrayStoreException
+		//oarr[0] = new String("0");
+		System.out.println(oarr[2].getClass().getName());
+		
+		Object[] oarr2 = new Object[3];
+		oarr2[0] = new Integer(0);
+		oarr2[1] = new Integer(1);
+		oarr2[2] = new Integer(2);
+		//Exception error like this: ClassCastException
+		//Integer[] arr2 = (Integer[]) oarr2;
+		
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(new Integer(0));
+		list.add(new Integer(1));
+		list.add(new Integer(2));
+		System.out.println(list.get(0).getClass().getName());
+		List<Object> olist = (List) list;
+		olist.add(new String("3"));
+		//error like this
+		//System.out.println(list.get(3).getClass().getName());
+		//ok like this
+		System.out.println(list.get(3));
+		
+		List<String> list2 = new LinkedList<String>();
+		list2.add("a");
+		list2.add("b");
+		list2.add("z");
+		//List rawlist = list;
+		List rawlist = (List)list2;
+		rawlist.add(new Integer(1));
 	}
 }
 enum Size { S, M, L};
