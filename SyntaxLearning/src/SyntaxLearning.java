@@ -4,13 +4,13 @@
 import java.io.PrintWriter;
 import java.util.*;
 
-import InCoding.ReflectionTest;
+import InCoding.*;
 import OutCoding.*;
 public class SyntaxLearning {
 
 	public static void main(String[] argv)
 	{
-		fun16();
+		fun17();
 		
 		//ReflectionTest.classAnalyzer();
 		//using package OutCoding
@@ -234,6 +234,13 @@ public class SyntaxLearning {
 		String[] b = ReflectionTest.arrayGrow(a);
 		System.out.println(b.length);
 
+	}
+	public static void fun17() {
+		try{
+			ExceptionTest.throwTest();
+		}catch (IException e) {
+			System.out.println("IException catched.");
+		}
 	}
 }
 enum Size { S, M, L};
