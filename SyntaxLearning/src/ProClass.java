@@ -1,5 +1,5 @@
 /*
- * a class under default package
+ * a class under same package, thus its public/default methods are able to be called
  */
 public class ProClass {
 	//protected void debug() {

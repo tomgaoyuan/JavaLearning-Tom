@@ -3,16 +3,20 @@
  */
 import java.io.PrintWriter;
 import java.util.*;
+
+import InCoding.ReflectionTest;
 import OutCoding.*;
 public class SyntaxLearning {
 
 	public static void main(String[] argv)
 	{
-		fun15();
+		fun16();
+		
 		//ReflectionTest.classAnalyzer();
 		//using package OutCoding
 		//Main.fun7();
 		//ReflectionTest.objectAnalyzer(new Manager("tom","CTO"));
+
 		System.out.println("Done!");
 	}
 	private static void fun1() {
@@ -208,6 +212,7 @@ public class SyntaxLearning {
 		list.add(new Integer(2));
 		System.out.println(list.get(0).getClass().getName());
 		List<Object> olist = (List) list;
+		//ok like this
 		olist.add(new String("3"));
 		//error like this
 		//System.out.println(list.get(3).getClass().getName());
@@ -221,6 +226,14 @@ public class SyntaxLearning {
 		//List rawlist = list;
 		List rawlist = (List)list2;
 		rawlist.add(new Integer(1));
+	}
+	public static void fun16() {
+		//ReflectionTest.objectAnalyzer(new Manager("tom","CTO"));
+		String[] a = {"Hello", "world", "!" };
+		System.out.println(a.length);
+		String[] b = ReflectionTest.arrayGrow(a);
+		System.out.println(b.length);
+
 	}
 }
 enum Size { S, M, L};

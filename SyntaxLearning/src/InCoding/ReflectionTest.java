@@ -1,3 +1,4 @@
+package InCoding;
 import java.util.*;
 import java.lang.reflect.*;
 
@@ -59,5 +60,14 @@ public class ReflectionTest {
 				cl = cl.getSuperclass();
 			}
 		}while (!cls.contains(cl));
+	}
+	public static <T> T[] arrayGrow(T[] rhs) {
+		Class cl = rhs.getClass();
+		Class componentType = cl.getComponentType();
+		int length = rhs.length;
+		//lhs is an reference of Object
+		Object lhs = Array.newInstance(componentType, length * 11 /10 +10);
+		System.arraycopy(rhs, 0, lhs, 0, length);
+		return (T[])lhs;
 	}
 }
