@@ -1,4 +1,4 @@
 #JavaLearning-Tom
-#This project is only used for learning.
-#Java.
-#Git.
+#This project is only used for:
+#Java learning,
+#Git learning.
