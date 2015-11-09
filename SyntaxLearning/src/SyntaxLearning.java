@@ -10,6 +10,7 @@ public class SyntaxLearning {
 
 	public static void main(String[] argv)
 	{
+		EchoServer.work();
 		System.out.println("Done!");
 	}
 	private static void funOutCoding() {
