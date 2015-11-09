@@ -3,21 +3,20 @@
  */
 import java.io.PrintWriter;
 import java.util.*;
-
 import InCoding.*;
 import OutCoding.*;
+
 public class SyntaxLearning {
 
 	public static void main(String[] argv)
 	{
-		fun17();
-		
-		//ReflectionTest.classAnalyzer();
-		//using package OutCoding
-		//Main.fun7();
-		//ReflectionTest.objectAnalyzer(new Manager("tom","CTO"));
-
 		System.out.println("Done!");
+	}
+	private static void funOutCoding() {
+		ReflectionTest.classAnalyzer();
+		//using package OutCoding
+		Main.fun7();
+		ReflectionTest.objectAnalyzer(new Manager("tom","CTO"));		
 	}
 	private static void fun1() {
 		//basic type
@@ -227,7 +226,7 @@ public class SyntaxLearning {
 		List rawlist = (List)list2;
 		rawlist.add(new Integer(1));
 	}
-	public static void fun16() {
+	private static void fun16() {
 		//ReflectionTest.objectAnalyzer(new Manager("tom","CTO"));
 		String[] a = {"Hello", "world", "!" };
 		System.out.println(a.length);
@@ -235,69 +234,12 @@ public class SyntaxLearning {
 		System.out.println(b.length);
 
 	}
-	public static void fun17() {
+	private static void fun17() {
+	//try-catch demo
 		try{
 			ExceptionTest.throwTest();
 		}catch (IException e) {
 			System.out.println("IException catched.");
 		}
-	}
-}
-enum Size { S, M, L};
-class Employer {
-	public Employer(String s) {
-		_name =new String(s);
-	}
-	private String _name;
-	public void debug() {
-		System.out.println("Object of class Employer");
-	}
-	public void debugForBase() {
-		System.out.println("Object of class Employer");
-	}
-}
-class Manager extends Employer {
-	public Manager(String s, String pos) {
-		super(s);
-		_position = new String(pos);
-	}
-	public void debug() {
-		System.out.println("Object of class Manager");
-	}
-	private String _position;
-}
-class ArrayAlg<T> {
-	public Pair maxmin(java.util.ArrayList<Comparable<T>> arr ) {
-		T max, min;
-		max = min = (T) arr.get(0);
-		for (int i = 1; i<arr.size(); i++) {
-			if (arr.get(i).compareTo(max) > 0  )
-				max = (T) arr.get(i);
-			if (arr.get(i).compareTo(min) < 0 )
-				min = (T) arr.get(i);
-		}
-		return new Pair(max, min);
-	}
-	class Pair {
-		public Pair(T max,  T min) {
-			_max = max;
-			_min = min;
-		}
-		public T getMax() {
-			return _max;
-		}
-		public T getMin() {
-			return _min;
-		}
-		private T _max;
-		private T _min;
-	}
-	public void makeArray(T[] a) {
-		//Can not make T[]
-		Object[] p = new Object[a.length];
-		for(int i=0; i<a.length; i++)
-			p[i] = (Object) a[i];
-		for(Object e : p)
-			System.out.println((T)e);
 	}
 }
