@@ -1,4 +1,3 @@
 #JavaLearning-Tom
-#This project is only used for:
-#Java learning,
-#Git learning.
+#This repository is only used for:
+#Java learning and algorithm learning.
