@@ -1,3 +1,5 @@
 #JavaLearning-Tom
-#This repository is only used for:
+
+#This repository is used for:
+
 #Java learning and algorithm learning.
