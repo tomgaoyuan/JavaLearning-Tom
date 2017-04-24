@@ -12,13 +12,17 @@ public class javaLearning{
 		//int[] nums = new int[] {5,1,2,3,4};//{5,3,2,1,4};
 		//System.out.println(findPos(nums));
 		//System.out.println( reverseOrderNum("DBBAC") );
-		MyTree.buildTree(new Integer[]{1,null,2});
-		MyTree.printTreeDLR();
-		MyTree.printTreeLRD();
-		
+		//MyTree.buildTree(new Integer[]{1,null,2});
+		//MyTree.printTreeDLR();
+		//MyTree.printTreeLRD();
+		//MyTree.buildTree(new Integer[]{3,9,20,null,null,15,7});
+		//System.out.println( levelOrderBottom(MyTree.root) );
+		//sortedArrayToBST(new int[]{1,2,3,4,5});
+		MyTree.buildTree(new Integer[]{1,2});
+		isBalanced(MyTree.root);
 	}
 	@SuppressWarnings("unused")
-	private static void syntaxTest() {
+	public static void syntaxTest() {
 		System.out.println("Hello world!");
 //An input demo
 		boolean inputYN = false;
@@ -52,7 +56,7 @@ public class javaLearning{
 		System.out.println("Quiting");		
 	}
 	@SuppressWarnings("unused")
-	private static int[] twoSum(int[] nums, int target){
+	public static int[] twoSum(int[] nums, int target){
 		int[] re = new int[2];
 		//search
 		for(int l1=0; l1<nums.length; l1++) {
@@ -486,6 +490,64 @@ public class javaLearning{
     			existNum.put(str.charAt(c), existNum.get(str.charAt(c))+1);
     	}
     	return count;
+    }
+    public static List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> list = new LinkedList<List<Integer>>();
+        Queue<TreeNode> qu = new LinkedList<TreeNode>();
+        qu.add(root);
+        while(!qu.isEmpty()){
+        	list.add(0, new LinkedList<Integer>()); 	//add at the first pos
+        	int size = qu.size();
+        	for(int c=0; c<size; c++){
+        		TreeNode now  = qu.remove();
+        		if(now.left != null)
+        			qu.add(now.left);
+        		if(now.right != null)
+        			qu.add(now.right);
+        		list.get(0).add(now.val);
+        	}
+        }
+        return list;
+    }
+    public static TreeNode sortedArrayToBST(int[] nums) {
+        if (nums.length == 0)
+        	return null;
+        else{
+        	TreeNode root = new TreeNode(0);
+        	sortedArrayToBSTAux(nums, 0, nums.length-1, root);
+        	return root;
+        }	
+    }
+    private static void sortedArrayToBSTAux(int[] nums, int p, int q, TreeNode root){
+    	if (p<=q){
+    		int mid = (p+q)/2;
+    		root.val = nums[mid];
+    		if (p <= mid-1){
+    			root.left = new TreeNode(0);
+    			sortedArrayToBSTAux(nums, p, mid-1, root.left);
+    		}
+    		if (mid+1 <= q) {
+    			root.right = new TreeNode(0);
+    			sortedArrayToBSTAux(nums, mid+1, q, root.right);
+    		}
+    	}
+    }
+    public static boolean isBalanced(TreeNode root) {
+    	if (isBalancedAux(root)>0)
+    		return true;
+    	else
+    		return false;
+    }
+    private static int isBalancedAux(TreeNode root) {
+    	if (root==null) return 0;
+    	int h1 = isBalancedAux(root.left);
+    	if (h1<0) return -1;
+    	int h2 = isBalancedAux(root.right);
+    	if (h2<0) return -1;
+    	if (Math.abs(h1-h2) <=1 )
+    		return Math.max(h1, h2)+1;
+    	else
+    		return -1;
     }
 }
 class MyTree{
