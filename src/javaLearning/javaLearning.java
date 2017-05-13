@@ -18,8 +18,22 @@ public class javaLearning{
 		//MyTree.buildTree(new Integer[]{3,9,20,null,null,15,7});
 		//System.out.println( levelOrderBottom(MyTree.root) );
 		//sortedArrayToBST(new int[]{1,2,3,4,5});
-		MyTree.buildTree(new Integer[]{1,2});
-		isBalanced(MyTree.root);
+		//MyTree.buildTree(new Integer[]{1,2});
+		//isBalanced(MyTree.root);
+		//System.out.println(generate(5));
+		//System.out.println(maxProfit(new int[] {7,6,4,3,1}));
+		//System.out.println(getRow(5));
+		//System.out.println(maxProfit2(new int[] {4,3,2,1}));
+		//System.out.println(isPalindrome(new String("A man, a plan, a canal: Panama")));
+		//System.out.println(singleNumber(new int[] {1}));
+		//MyLinkedList.buildLinkedList(new int[] {1,2,3,4,5});
+		//MyLinkedList.printLinkedList();
+		//System.out.println(hasCycle(MyLinkedList.head));
+		//MinStack s = new MinStack();
+		//s.push(2); s.push(1);
+		//System.out.println(s.top());
+		//System.out.println(s.getMin());
+		MyLinkedList.buildLinkedList(new int[] {1,2,3,4,5}, 0);
 	}
 	@SuppressWarnings("unused")
 	public static void syntaxTest() {
@@ -549,6 +563,109 @@ public class javaLearning{
     	else
     		return -1;
     }
+    public static List<List<Integer>> generate(int numRows) {
+    	List<List<Integer>> tri = new LinkedList<List<Integer>>();
+    	if(numRows <= 0) return tri;
+    	tri.add(new LinkedList<Integer>(){{super.add(1);}});
+    	if(numRows == 1) return tri;
+    	tri.add(new LinkedList<Integer>(){{super.add(1); super.add(1);}});
+    	if(numRows == 2) return tri;
+    	List<Integer> line, lastLine ;
+    	for(int nRows=3; nRows<= numRows; nRows++) {
+    		line = new LinkedList<Integer>();
+    		lastLine = tri.get(tri.size()-1);
+    		line.add(1);
+    		for(int c=1; c<= nRows-2; c++)
+    			line.add(lastLine.get(c-1)+lastLine.get(c));
+    		line.add(1);
+    		tri.add(line);
+    	}
+    	return tri;
+    }
+    public static int maxProfit(int[] prices){
+    	if (prices.length<1) return 0;
+    	int buy=prices[0], sell=prices[0],  mProfit = 0;
+    	for(int c=1; c<prices.length; c++){
+    		if (prices[c] < buy){
+    			buy = prices[c];
+    			sell = prices[c];
+    		}
+    		else if(prices[c] > sell)
+    			sell = prices[c];
+    		mProfit = Math.max(sell-buy, mProfit);
+    	}
+    	return mProfit;
+    }
+    public static List<Integer> getRow(int rowIndex) {
+        List<Integer> row = new ArrayList<Integer>(rowIndex+1);
+        row.add(1);
+        if (rowIndex==0) return row;
+        row.add(1);
+        for(int l=3; l<=rowIndex+1; l++){
+        	int last = row.get(0).intValue();
+        	for(int c=1; c<l-1; c++){
+        		int current = last + row.get(c).intValue();
+        		last = row.get(c).intValue();
+        		row.set(c, current);
+
+        	}
+        	row.add(1);
+        }
+        return row;
+    }
+    public static int maxProfit2(int[] prices) {
+    	if (prices.length <= 1) return 0;
+    	int slope = -1, buy = -1, sumProfit = 0;
+        for(int c=1; c<prices.length; c++){
+        	if (prices[c] - prices[c-1] >= 0){
+        		if (slope == -1)
+        			buy = c-1;
+    			slope = 1;
+        	} else {
+        		if (slope == 1)
+        			sumProfit += prices[c-1] - prices[buy];
+        		slope = -1;
+        		buy = c;
+        	}
+        }
+        sumProfit += buy==-1 ? 0 :  prices[prices.length-1] - prices[buy] ;
+        return sumProfit;
+    }
+    public static boolean isPalindrome(String s) {
+        int p=0, q=s.length()-1;
+        while(p<q){
+        	if ( !Character.isLetterOrDigit(s.charAt(p)) ) { p++; continue; }
+        	if ( !Character.isLetterOrDigit(s.charAt(q)) ) { q--; continue; }
+        	if ( Character.toLowerCase(s.charAt(p)) != Character.toLowerCase(s.charAt(q)) ) return false;
+        	p++; q--;
+        }	
+        return true;
+    }
+    public static int singleNumber(int[] nums) {
+        Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+        for(int c=0; c<nums.length; c++) 
+        	if(!m.containsKey(nums[c])) m.put(nums[c], 1);
+        	else m.put(nums[c], 2);
+        Iterator<Integer> i = m.keySet().iterator(); 
+        while(i.hasNext()){
+        	Integer key = i.next();
+        	if (m.get(key)==1) return key;
+        }
+        return -1;      
+    }
+    public static boolean hasCycle(ListNode head) {
+        if (head == null) return false;
+        ListNode l1 = head, l2 = head.next;
+        while(l1 != l2){
+            if (l1==null) return false;
+            else l1 = l1.next;
+            if (l2==null) return false;
+            else l2 = l2.next;
+            if (l2==null) return false;
+            else l2 = l2.next;
+        }
+        return true;
+    }
 }
 class MyTree{
 	public static TreeNode root = null;
@@ -632,4 +749,78 @@ class TreeNode {
      TreeNode left;
      TreeNode right;
      TreeNode(int x) { val = x; }
+}
+class MyLinkedList {
+	private  MyLinkedList(){
+		;
+	}
+	public static void buildLinkedList(int[] nums){
+		if (head != null) return;
+		head = new ListNode(0);
+		ListNode now = head;
+		for(int c=0; c < nums.length; c++){				
+			now.next = new ListNode(nums[c]);
+			now = now.next;
+		}
+	}
+	public static void buildLinkedList(int[] nums, int rollBack ){
+		// build a circled linked list
+		buildLinkedList(nums);
+		int lth = 0;
+		ListNode p = head, q = head;
+		while(p.next!=null) { p=p.next; lth++;}
+		assert rollBack + 1 <= lth;
+		for(int c=0; c<=rollBack; c++) q = q.next;
+		p.next = q;
+	}
+	public static void printLinkedList(){
+		List<Integer> lst = new LinkedList<Integer>();
+		ListNode now = head;
+		now = now.next;
+		while(now!=null){
+			lst.add(now.val);
+			now = now.next;
+		}
+		System.out.println(lst);
+	}
+	public static ListNode head = null;
+}
+//Definition for singly-linked list.
+class ListNode {
+	int val;
+	ListNode next;
+	ListNode(int x) {
+		val = x;
+		next = null;
+	}
+}
+// initialize your data structure here. 
+class MinStack {
+	public MinStack() {
+		 nums = new LinkedList<Integer>();
+		 mins = new LinkedList<Integer>();
+		 mins.add(Integer.MAX_VALUE);
+	}
+
+	public void push(int x) {
+		nums.add(x);
+		if (x<mins.get(mins.size()-1)) mins.add(x);
+		else mins.add(mins.get(mins.size()-1));
+	}
+
+	public void pop() {
+		nums.remove(nums.size()-1);
+		mins.remove(mins.size()-1);
+		
+	}
+
+	public int top() {
+		return nums.get(nums.size()-1);
+	}
+
+	public int getMin() {
+		return mins.get(mins.size()-1);
+	}
+	private List<Integer> nums;
+	private List<Integer> mins;
 }
