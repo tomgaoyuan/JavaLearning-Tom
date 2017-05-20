@@ -33,7 +33,22 @@ public class javaLearning{
 		//s.push(2); s.push(1);
 		//System.out.println(s.top());
 		//System.out.println(s.getMin());
-		MyLinkedList.buildLinkedList(new int[] {1,2,3,4,5}, 0);
+		//MyLinkedList.buildLinkedList(new int[] {1,2,3,4,5}, 0);
+		//System.out.print(twoSum2(new int[] {2,7,11,15},10));
+		//System.out.println(convertToTitle(26));
+		//System.out.println(titleToNumber("AA"));
+		//System.out.println(trailingZeroes(2));
+		//System.out.println(majorityElement(new int[] {3,3,4,3}));
+		//int[] nums = new int[]{1,2,3,4,5,6,7};
+		//rotate(nums, 3);
+		//System.out.println(Arrays.toString(nums));
+		int n = 43261596;
+		String s = new String("0000"); s += s; s += s; s += s;
+		String s1 = Integer.toBinaryString(n);
+		System.out.println( s.substring(0,32-s1.length()) + s1 );
+		s1 = Integer.toBinaryString(reverseBits(n));
+		System.out.println( s.substring(0,32-s1.length()) + s1 );
+		
 	}
 	@SuppressWarnings("unused")
 	public static void syntaxTest() {
@@ -665,6 +680,87 @@ public class javaLearning{
             else l2 = l2.next;
         }
         return true;
+    }
+    public static int[] twoSum2 (int[] numbers, int target) {
+    	int[] indeces = null;
+    	Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+    	for(int c=0; c<numbers.length; c++) {
+    		if ( m.containsKey(numbers[c]) ) { 
+    			indeces = new int[2];
+    			indeces[0] = m.get(numbers[c]); 
+    			indeces[1] = c+1; 
+    			return indeces; 
+    		}
+    		m.put(target- numbers[c], c+1);	
+    	}
+    	if (indeces == null) throw new IllegalArgumentException("No two sum solution");
+    	return indeces;
+    }
+    public static String convertToTitle(int n) {
+        StringBuilder sb = new StringBuilder();
+        while(n!=0){
+        	sb.append((char)('A' + --n%26) );
+        	n /= 26;
+        }
+        return sb.reverse().toString();
+    }
+    public static int titleToNumber(String s) {
+        int res = 0;
+        for(int c=0; c<s.length(); c++){
+        	res *= 26;
+        	res += s.charAt(c) - '@'; 
+        }
+        return res;
+    }
+    public static int trailingZeroes(int n) {
+    	return Math.min( trailingZeroesAux(n, 2), trailingZeroesAux(n, 5) );
+    }
+    private static int trailingZeroesAux(int n, int m) {
+    	if (n/m == 0 ) return 0;
+    	else return n/m + trailingZeroesAux(n/m , m);
+    }
+    public static int majorityElement( int nums[] ) {
+    	//It is a wrong answer!!!
+    	/*    	
+    	* long sum = 0;
+    	* for(int c=0; c < nums.length; c++) sum += nums[c];
+    	* long delta = Integer.MAX_VALUE;
+    	* int n = -1;
+    	* for(int c=0; c < nums.length; c++)
+    	*		if ( Math.abs(sum - nums[c] * nums.length) < delta) { delta = Math.abs(sum - nums[c] * nums.length); n = c;}
+    	* return nums[n];
+    	 */
+    	Arrays.sort(nums);
+    	return(nums[nums.length >> 1]);
+    }
+    public static void rotate(int[] nums, int k) {
+    	k %= nums.length;
+//        for(int c=1; c <= k; c++){
+//        	int top = nums[nums.length-1];
+//        	for(int c1=nums.length-1; c1 > 0; c1--)
+//        		nums[c1] = nums[c1-1];
+//        	nums[0] = top;
+//        }
+//        int[] tmp = new int[nums.length];
+//        for(int c = 0; c < nums.length; c++)
+//        	tmp[(c+k) % nums.length] = nums[c];
+//        for(int c = 0; c < nums.length; c++)
+//        	nums[c] = tmp[c];
+        int[] tail = new int[k];
+        for(int c=0; c < k; c++)
+        	tail[c] = nums[nums.length-k+c];
+        for(int c=nums.length-1; c >= k ; c--)
+        	nums[c] = nums[c-k];
+        for(int c=0; c < k; c++)
+        	nums[c] = tail[c];
+    }
+    public static int reverseBits(int n) {
+    // you need treat n as an unsigned value
+    	int re = 0;
+    	for(int c=0; c < 32; c++)
+    		if ( ( n & (1 << (31-c)) ) != 0)
+    			re |= 1<<c;
+    	return re;
     }
 }
 class MyTree{
