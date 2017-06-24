@@ -42,13 +42,44 @@ public class javaLearning{
 		//int[] nums = new int[]{1,2,3,4,5,6,7};
 		//rotate(nums, 3);
 		//System.out.println(Arrays.toString(nums));
-		int n = 43261596;
-		String s = new String("0000"); s += s; s += s; s += s;
-		String s1 = Integer.toBinaryString(n);
-		System.out.println( s.substring(0,32-s1.length()) + s1 );
-		s1 = Integer.toBinaryString(reverseBits(n));
-		System.out.println( s.substring(0,32-s1.length()) + s1 );
-		
+		//int n = 43261596;
+		//String s = new String("0000"); s += s; s += s; s += s;
+		//String s1 = Integer.toBinaryString(n);
+		//System.out.println( s.substring(0,32-s1.length()) + s1 );
+		//s1 = Integer.toBinaryString(reverseBits(n));
+		//System.out.println( s.substring(0,32-s1.length()) + s1 );
+		//System.out.println(hammingWeight(-2));
+		//System.out.println(mySqrt2(36));
+		//System.out.println(rob(new int[]{1,2,3}));
+		//System.out.println(isHappy(7));
+		//MyLinkedList.buildLinkedList(new int[]{1,2,6,3,4,5,6});
+		//System.out.println(removeElements(MyLinkedList.head, 6));
+		//MyLinkedList.printLinkedList();
+		//System.out.println(isIsomorphic(new String("ab"), new String("aa")));
+		//MyLinkedList.buildLinkedList(new int[]{1});
+		//reverseList(MyLinkedList.head.next);
+		//System.out.println(containsDuplicate(new int[]{1,2,1}));
+		//System.out.println(containsNearbyDuplicate(new int[]{1,2,1},1));
+		//MyTree.buildTree(new Integer[]{4,2,7,1,3,6,9});
+		//invertTree(MyTree.root);
+		//MyTree.printTreeDLR();
+		//System.out.println(isPowerOfTwo(64));
+		//MyLinkedList.buildLinkedList(new int[]{1});
+		//System.out.println(isPalindrome(MyLinkedList.head.next));	
+		//MyLinkedList.buildLinkedList(new int[]{1,2,3});
+		//deleteNode(MyLinkedList.head.next.next);
+		//MyLinkedList.printLinkedList();
+		//MyStack s = new MyStack();
+		//s.push(1); s.push(2);
+		//System.out.println(s.top());
+		//System.out.println(s.pop());
+		//s.push(3);
+		//System.out.println(s.pop());
+		//MyQueue q = new MyQueue();
+		//q.push(1); q.push(2);q.push(3);
+		//System.out.println(q.pop());
+		//System.out.println(isAnagram("anagram", "nagaram"));
+		System.out.println(addDigits(38));
 	}
 	@SuppressWarnings("unused")
 	public static void syntaxTest() {
@@ -762,6 +793,223 @@ public class javaLearning{
     			re |= 1<<c;
     	return re;
     }
+    public static int hammingWeight(int n) {
+        int cnt = 0;
+    	while(n != 0){
+    		n &= n-1;
+    		cnt++;
+    	}
+    	return cnt;
+    }
+    public static int mySqrt2(int x) {
+        if (x==0) return 0;
+    	else if (x < 4) return 1;
+    	else {
+    		int p = 1, q = x/2 +1;
+    		while (p<q){
+    			int mid = (p+q)/2;
+    			if ( x / mid == mid ) 
+    			    return mid;
+    			else if (x / mid < mid ) // not always (float) x / mid < mid
+    			    q = mid - 1;
+    			else  					// (float) x / mid > mid 
+    			    p = mid + 1;
+    		}	
+    		if(x / p >= p) return p;
+    		else return p-1;
+    	}	      
+    }
+    public static int rob(int[] nums) {
+        if(nums.length < 1) return 0;
+        if(nums.length == 1) return nums[0];
+        int maxOO = 0, maxXO = nums[0], maxOX = nums[1];
+        int maxVal = Math.max(maxOO, Math.max(maxXO, maxOX));
+        for(int c=2; c < nums.length; c++){
+        	int tmpXO = maxOX;
+        	int tmpOO = Math.max(maxXO, maxOO);
+        	int tmpOX = Math.max(maxOO + nums[c], maxXO + nums[c]);
+        	maxXO = tmpXO; maxOO = tmpOO; maxOX = tmpOX;
+        	maxVal = Math.max(maxOO, Math.max(maxXO, maxOX));
+        }
+        return maxVal;
+    }
+    public static boolean isHappy(int n) {
+    // This is a wrong answer. It can not detect cycle.
+        if (n == 1) 
+        	return true ;
+        else {
+        	int sum = 0;
+        	do{
+        		sum += (n % 10) * (n % 10);
+        		n /= 10;
+        	}while( n != 0);
+        	return isHappy(sum);
+        }
+    }
+    public static ListNode removeElements(ListNode head, int val) {
+        while(head != null && head.val == val) head = head.next;
+        ListNode last = head, now = head;
+        while(last != null){
+            now = last.next;
+        	while(now != null && now.val == val) now = now.next;
+        	last.next = now;
+        	last = now;
+        }
+        return head;        
+    }
+    public static boolean isIsomorphic(String s, String t) {
+    	if (s.length() != t.length()) return false;
+        Map<Character, Character> m = new HashMap<Character, Character>();
+        for(int c=0; c < s.length(); c++){
+        	if (m.containsKey(s.charAt(c))){
+        		if ( t.charAt(c) != m.get(s.charAt(c)) ) return false; 
+        	} else
+        		m.put(s.charAt(c), t.charAt(c));
+        }
+        m.clear();
+        for(int c=0; c < s.length(); c++){
+        	if (m.containsKey(t.charAt(c))){
+        		if ( s.charAt(c) != m.get(t.charAt(c)) ) return false; 
+        	} else
+        		m.put(t.charAt(c), s.charAt(c));
+        }        
+        return true;
+    }
+    public static ListNode reverseList(ListNode head) {
+    	if (head == null) return null;
+        ListNode done = head, now = head.next, undone = null;
+        done.next = null;
+        while(now != null){
+        	undone = now.next;
+        	now.next = done;
+        	done = now;
+        	now = undone;
+        }
+        return done;
+    }
+    public static boolean containsDuplicate(int[] nums) {
+    //Time limited exceeded if using HashSet
+        Map<Integer,Integer> m = new HashMap<Integer,Integer>();
+        for(int c=0; c < nums.length; c++)
+        	if(m.containsKey(nums[c])) return true;
+        	else m.put(nums[c],c);
+        return false; 
+    }
+    public static boolean containsNearbyDuplicate(int[] nums, int k) {
+        Map<Integer, Integer> m = new HashMap<Integer, Integer>();
+        for(int c=0; c < nums.length; c++){
+        	Integer idx = m.get(nums[c]);
+            	if(idx != null && c - idx <= k) 
+            		return true;
+            	m.put(nums[c], c);
+         }
+         return false;
+    }
+    public static TreeNode invertTree(TreeNode root) {
+    	if (root == null) return null;
+    	TreeNode t = root.left;
+    	root.left = root.right;
+    	root.right = t;
+    	invertTree(root.left);
+    	invertTree(root.right);
+    	return root;
+    }
+    public static boolean isPowerOfTwo(int n) {
+        return  ( n & (n-1) ) == 0 ? true : false;
+    }
+    public static boolean isPalindrome(ListNode head) {
+        int length = 0;
+        ListNode p = head;
+        while(p != null) {
+        	length++;
+        	p = p.next;
+        }
+        if ( length <=1 ) return true;
+        ListNode left = head, right = null, middle = head;
+        for(int c=0; c < length/2 -1; c++) middle = middle.next;
+        if (length % 2 != 0) middle = middle.next;
+        right = middle.next;
+        middle.next = null;
+        right = reverseList(right);
+        boolean flag = true;
+        ListNode pl = left, pr = right;
+        while(pl != null && pr != null) {
+        	if (pl.val != pr.val) {
+        		flag = false;
+        		break;
+        	}
+        	pl = pl.next;
+        	pr = pr.next;
+        }
+        right = reverseList(right);
+        middle.next = right;
+        return flag;
+    }
+    public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    	int min = p.val, max = q.val;
+    	if( p.val > q.val ) {
+    		min = q.val;
+    		max = p.val;
+    	}
+    	while( root != null ){
+    		if (max < root.val) root = root.left;
+    		else if (min > root.val) root = root.right;
+    		else break;
+    	}
+    	return root;
+    }
+    public static void deleteNode(ListNode node) {
+    	ListNode last = null;
+    	while(node.next != null){
+    		node.val = node.next.val;
+    		last = node;
+    		node = node.next;
+    	}
+    	last.next = null;
+    }
+    public static boolean isAnagram(String s, String t) {
+        Map<Character, Integer> count = new HashMap<Character, Integer>();
+        for(int i=0; i < s.length(); i++){
+        	Integer v = count.get(s.charAt(i));
+        	if(v == null) count.put(s.charAt(i), 1);
+        	else count.put(s.charAt(i), v+1);
+        }
+        for(int i=0; i < t.length(); i++){
+        	Integer v = count.get(t.charAt(i));
+        	if(v == null) return false;
+        	else if(v == 1) count.remove(t.charAt(i));
+        	else count.put(t.charAt(i), v-1);
+        }
+        if(count.isEmpty()) return true;
+        else return false;
+    }
+    public static List<String> binaryTreePaths(TreeNode root) {
+    	List<String> oldPathL = null, oldPathR = null, paths = new LinkedList<String>();
+    	if(root == null)
+    		return paths;
+        else if(root.left == null && root.right == null) {
+        	paths.add(Integer.toString(root.val));
+        	return paths;
+        }else{
+        	oldPathL = binaryTreePaths(root.left);
+        	oldPathR = binaryTreePaths(root.right);
+        }
+        if(oldPathL != null)
+            for(String s : oldPathL) paths.add(Integer.toString(root.val) + "->" + s);
+        if(oldPathR != null)
+            for(String s : oldPathR) paths.add(Integer.toString(root.val) + "->" + s);
+        return paths;        
+    }
+    public static int addDigits(int num) {
+    	int sum = 0, now = 0;
+        while(num != 0){
+        	now = num % 10;
+        	sum += now;
+        	num /= 10;
+        	if( sum >= 10 ) sum = sum%10 +1;
+        }
+        return sum;
+    }
 }
 class MyTree{
 	public static TreeNode root = null;
@@ -919,4 +1167,84 @@ class MinStack {
 	}
 	private List<Integer> nums;
 	private List<Integer> mins;
+}
+class MyStack {
+
+    /** Initialize your data structure here. */
+	private Queue<Integer> front;
+	private Queue<Integer> rear;
+    public MyStack() {
+    	front = new LinkedList<Integer>();
+    	rear = new LinkedList<Integer>();    
+    }
+    
+    /** Push element x onto stack. */
+    public void push(int x) {
+    	front.add(x);
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    public int pop() {
+        Integer top = null;
+        while(true){
+        	top = front.poll();
+        	if (front.isEmpty()) break;
+        	else rear.add(top);
+        }
+        Queue<Integer> temp = front;
+        front = rear;
+        rear = temp;
+        return top;
+    }
+    
+    /** Get the top element. */
+    public int top() {
+        Integer top = null;
+        while(!front.isEmpty()){
+        	top = front.poll();
+        	rear.add(top);
+        }
+        Queue<Integer> temp = front;
+        front = rear;
+        rear = temp;
+        return top;        
+    }
+    
+    /** Returns whether the stack is empty. */
+    public boolean empty() {
+        return front.isEmpty();
+    }
+}
+class MyQueue {
+	private Stack<Integer> s;
+	private Stack<Integer> extra;
+    /** Initialize your data structure here. */
+    public MyQueue() {
+    	s = new Stack<Integer>();
+    	extra = new Stack<Integer>();
+    }
+    
+    /** Push element x to the back of queue. */
+    public void push(int x) {
+        while(!s.isEmpty())
+        	extra.push(s.pop());
+        s.push(x);
+        while(!extra.isEmpty())
+        	s.push(extra.pop());
+    }
+    
+    /** Removes the element from in front of queue and returns that element. */
+    public int pop() {
+        return s.pop();
+    }
+    
+    /** Get the front element. */
+    public int peek() {
+        return s.peek();
+    }
+    
+    /** Returns whether the queue is empty. */
+    public boolean empty() {
+        return s.isEmpty();
+    }
 }
