@@ -79,8 +79,19 @@ public class javaLearning{
 		//q.push(1); q.push(2);q.push(3);
 		//System.out.println(q.pop());
 		//System.out.println(isAnagram("anagram", "nagaram"));
-		System.out.println(addDigits(38));
+		//System.out.println(addDigits(38));
+		//System.out.println(isUgly(8));
+		//System.out.println(missingNumber(new int[]{0}));
+		//isBadVersionList = new int[]{1,1,0,0,0}; // 1:good, 0:bad
+		//System.out.print(firstBadVersion(isBadVersionList.length));
+		//int[] nums = new int[] {0,1,0,1,0,0};
+		//moveZeroes(nums);
+		//System.out.println(Arrays.toString(nums));
+		//System.out.println(wordPattern("abba","dog dog dog dog"));
+		//System.out.println(canWinNim(5));
+		System.out.println(countPrimes(9));
 	}
+	private static int[] isBadVersionList;
 	@SuppressWarnings("unused")
 	public static void syntaxTest() {
 		System.out.println("Hello world!");
@@ -1009,6 +1020,125 @@ public class javaLearning{
         	if( sum >= 10 ) sum = sum%10 +1;
         }
         return sum;
+    }
+    public static boolean isUgly(int num) {
+        if (num==0) return false;
+        while(num != 1){
+        	if (num%2 == 0)
+        		num /= 2;
+        	else if (num%3 == 0)
+        		num /= 3;
+        	else if (num%5 == 0)
+        		num /= 5;
+        	else
+        		return false;
+        }
+        return true;
+    }
+    public static int missingNumber(int[] nums) {
+    	int n = nums.length, diff = 0;
+    	for(int c=0; c<n; c++){
+    		diff += c+1;
+    		diff -= nums[c];
+    	}
+    	return diff;
+    }
+    private static boolean isBadVersion(int i){
+    	return isBadVersionList[i-1]==0;
+    }
+    public static int firstBadVersion(int n) {
+        if (isBadVersion(1)) return 1;
+        int p = 1, q = n, mid = p+(q-p)/2;
+        while( q-p > 1 ){
+            mid = p+(q-p)/2;
+            if(isBadVersion(mid)) q = mid;
+            else p = mid;
+        }
+        return q;
+    }
+    public static void moveZeroes(int[] nums) {
+    	moveZerosAux(nums, 0, nums.length-1);
+    }
+    private static int moveZerosAux(int[] nums, int start, int end){ //end included
+    	if (start >= end) {
+    			if(nums[start]==0) return start;
+    			else return end+1;
+    	}
+    	int posL = moveZerosAux(nums, start, start + (end-start)/2);
+    	int posR = moveZerosAux(nums, start + (end-start)/2 + 1, end);
+    	int lengthL = start + (end-start)/2 - posL + 1; 
+    	if (lengthL == 0) return posR;
+    	for(; posL + lengthL < posR; posL++)
+    		nums[posL] = nums[posL+lengthL];
+    	for(; posL < posR; posL++) nums[posL] = 0;
+    	return posR - lengthL;	
+    }
+    public static boolean wordPattern(String pattern, String str) {
+        String[] mappingL = new String[26];
+        Map<String, Character> mappingR = new HashMap<String, Character>();
+        int p = 0, sf = 0, sr = 0;
+        while(sf < str.length()){
+        	while(sf < str.length() && !Character.isAlphabetic(str.charAt(sf))) sf++;
+        	sr = sf;
+        	while(sr < str.length() && Character.isAlphabetic(str.charAt(sr))) sr++;
+        	if(p >= pattern.length()) {
+        		p=-1;
+        		break;
+        	}
+        	char lp = Character.toLowerCase(pattern.charAt(p));
+        	String sub = str.substring(sf, sr);
+        	if(mappingL[lp - 'a'] == null)
+        		mappingL[lp - 'a'] = sub;
+        	else if(mappingL[lp - 'a'].equals(sub)) ;
+        	else break;
+        	if(!mappingR.containsKey(sub))
+        		mappingR.put(sub, lp);
+        	else if(mappingR.get(sub) == lp) ;
+        	else break;
+    		p++;
+    		sf = sr;
+        }
+        if(sf>=str.length() && p >= pattern.length()) return true;
+        else return false;
+    }
+    public static boolean canWinNim(int n) {
+    	//Not a best solution
+        boolean winner[][] = new boolean[3][3]; //T for first person A, F for the second B
+        // winner[i][j] means the winner if A takes j+1 when i+1 coins
+        winner[0][0] = true; winner[0][1] = true; winner[0][2] = true;
+        winner[1][0] = false; winner[1][1] = true; winner[1][2] = true;
+        winner[2][0] = false; winner[2][1] = false; winner[2][2] = true;
+        for(int i=3; i<n; i++)
+        	for(int j=2; j>=0; j--)
+        		winner[i%3][j] = !winner[(i-j-1)%3][0] && !winner[(i-j-1)%3][1] && !winner[(i-j-1)%3][2];
+        return winner[(n-1)%3][0] || winner[(n-1)%3][1] || winner[(n-1)%3][2];
+    }
+    public static int countPrimes(int n) {
+    /*	
+    	//time limit exceeded
+        LinkedList<Integer> primes = new LinkedList<Integer>();
+        boolean isPrime;
+        for(int c=2; c<n; c++){
+        	isPrime = true;
+        	for(int p=0; p < primes.size(); p++) 
+        		if( c%primes.get(p) == 0 ) {
+        			isPrime = false;
+        			break;
+        		}
+        	if(isPrime) primes.add(c);
+        }
+        return primes.size();
+    */
+    	if( n<=2 ) return 0;
+    	boolean[] notPrime = new boolean[n];
+    	int sum = 0;
+    	for(int c=2; c<n; c++){
+    		if(notPrime[c]) continue;
+    		else sum++;
+    		for(int i = 2; i <= n/c; i++  ) 
+    			if(c*i < n) notPrime[c*i] = true;
+    	}
+    	return sum;
     }
 }
 class MyTree{
